@@ -12,5 +12,4 @@ inputs:
     default: ${{ github.repository }}
 runs:
   using: 'node17'
-  main: '../actions/clickup-task-release/dist/index.js' 
-
+  main: '../dist/clickup-task-release.js' 

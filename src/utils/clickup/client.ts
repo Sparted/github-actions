@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { getTask } from './api/task';
 
-const CLICKUP_API = 'https://api.clickup.com/api/v2';
-
 type InitParams = {
   token: string
 };
+
+const CLICKUP_API = 'https://api.clickup.com/api/v2';
 
 const createClickupHeaders = (token: string) => ({
   Authorization: token,
