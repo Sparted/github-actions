@@ -1,0 +1,13 @@
+name: 'Clickup task versioning'
+description: 'On a merge: read the changelog and set new tasks as "Pending acceptance" on clickup. Also set the staging version'
+inputs:
+  github-token:
+    description: 'Github Token'
+    default: ${{ github.token }}
+  repo:
+    description: 'Repository name'
+    default: ${{ github.repository }}
+runs:
+  using: 'node17'
+  # TODO: change to correct entrypoint
+  main: './dist/index.js' 

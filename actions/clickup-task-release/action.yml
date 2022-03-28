@@ -1,0 +1,13 @@
+name: 'Clickup task release'
+description: 'On a release: read all the tasks ids in changelog and set them as "Accepted". Also set the production version'
+inputs:
+  github-token:
+    description: 'Github Token'
+    default: ${{ github.token }}
+  repo:
+    description: 'Repository name'
+    default: ${{ github.repository }}
+runs:
+  using: 'node17'
+  # TODO: change to correct entrypoint
+  main: './dist/index.js'
