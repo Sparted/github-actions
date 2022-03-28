@@ -6,7 +6,8 @@
   },
   "extends": "@sparted",
   "ignorePatterns": [
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "/dist/**"
   ],
   "settings": {
     "import/resolver": {

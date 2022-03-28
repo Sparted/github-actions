@@ -9,5 +9,5 @@ inputs:
     default: ${{ github.repository }}
 runs:
   using: 'node17'
-  # TODO: change to correct entrypoint
-  main: './dist/index.js'
+  main: '../dist/clickup-task-release.js' 
+
