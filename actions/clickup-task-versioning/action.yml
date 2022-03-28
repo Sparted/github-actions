@@ -1,6 +1,9 @@
 name: 'Clickup task versioning'
 description: 'On a merge: read the changelog and set new tasks as "Pending acceptance" on clickup. Also set the staging version'
 inputs:
+  clickup-token:
+    description: 'Clickup token'
+    required: true
   github-token:
     description: 'Github Token'
     default: ${{ github.token }}

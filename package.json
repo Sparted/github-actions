@@ -9,7 +9,9 @@
     "build": "rm -rf dist && ts-node ./scripts/build/build.ts"
   },
   "dependencies": {
-    "@actions/core": "^1.6.0"
+    "@actions/core": "^1.6.0",
+    "axios": "^0.26.1",
+    "zod": "^3.14.3"
   },
   "devDependencies": {
     "@sparted/eslint-config": "^1.0.2",
