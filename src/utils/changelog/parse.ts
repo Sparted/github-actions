@@ -30,5 +30,6 @@ export const getTaskIdsFromChangelogDiff = async (rawChangelogOne: string, rawCh
     changelogTwoLines.join(''),
   );
 
-  return diffIds;
+  // Remove the #
+  return diffIds.map((id) => id.slice(1));
 };

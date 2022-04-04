@@ -17,11 +17,11 @@ const run = async () => {
   }
 
   await clickupTaskVersioning({
+    repo,
     githubToken,
     clickupToken,
-    repo,
-    gitTargetRef: gitBaseReference,
     gitSourceRef: gitHeadReference,
+    gitTargetRef: gitBaseReference,
   });
 };
 

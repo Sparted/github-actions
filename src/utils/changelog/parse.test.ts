@@ -86,7 +86,7 @@ describe('changelog parse', () => {
     it('should return correct tasks ids', async () => {
       const taskIds = await getTaskIdsFromChangelogDiff(RAW_SERVER_CHANGELOG_ONE, RAW_SERVER_CHANGELOG_TWO);
 
-      expect(taskIds).toStrictEqual(['#ikdf132', '#mlf12e2']);
+      expect(taskIds).toStrictEqual(['ikdf132', 'mlf12e2']);
     });
 
     it('should return nothing when same server changelog', async () => {
@@ -100,7 +100,7 @@ describe('changelog parse', () => {
     it('should return correct tasks ids', async () => {
       const taskIds = await getTaskIdsFromChangelogDiff(RAW_APP_CHANGELOG_ONE, RAW_APP_CHANGELOG_TWO);
 
-      expect(taskIds).toStrictEqual(['#ikdf132', '#mlf12e2']);
+      expect(taskIds).toStrictEqual(['ikdf132', 'mlf12e2']);
     });
 
     it('should return nothing when same app changelog', async () => {

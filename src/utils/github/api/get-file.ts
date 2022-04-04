@@ -1,19 +1,19 @@
-import { RepositoryContent, RepositoryContentType } from '../schema/RepositoryContent';
+import { RepositoryFile, RepositoryFileType } from '../schema/RepositoryFile';
 import { Octokit } from '../types';
 
-export type GetContentParams = {
+export type GetFileParams = {
   owner: string,
   repoName: string,
   branchRef: string,
   path: string,
 };
 
-export const getContent = (githubClient: Octokit) => async ({
+export const getFile = (githubClient: Octokit) => async ({
   branchRef,
   owner,
   repoName,
   path,
-}: GetContentParams): Promise<RepositoryContentType> => {
+}: GetFileParams): Promise<RepositoryFileType> => {
   const response = await githubClient.rest.repos.getContent({
     owner,
     repo: repoName,
@@ -21,5 +21,5 @@ export const getContent = (githubClient: Octokit) => async ({
     ref: branchRef,
   });
 
-  return RepositoryContent.parse(response.data);
+  return RepositoryFile.parse(response.data);
 };

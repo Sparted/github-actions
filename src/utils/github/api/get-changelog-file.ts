@@ -1,10 +1,10 @@
 import { Octokit } from '../types';
-import { getContent, GetContentParams } from './get-content';
+import { getFile, GetFileParams } from './get-file';
 
-export type GetChangelogFileParam = Omit<GetContentParams, 'path'>;
+export type GetChangelogFileParam = Omit<GetFileParams, 'path'>;
 
 export const getChangelogFile = (githubClient: Octokit) => async (params: GetChangelogFileParam): Promise<string> => {
-  const { content, encoding } = await getContent(githubClient)({
+  const { content, encoding } = await getFile(githubClient)({
     ...params,
     path: 'CHANGELOG.md',
   });

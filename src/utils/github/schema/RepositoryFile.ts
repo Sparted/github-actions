@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const RepositoryContent = z.object({
+export const RepositoryFile = z.object({
   name: z.string(),
   path: z.string(),
   size: z.number(),
@@ -9,4 +9,4 @@ export const RepositoryContent = z.object({
   encoding: z.enum(['base64']),
 });
 
-export type RepositoryContentType = z.infer<typeof RepositoryContent>;
+export type RepositoryFileType = z.infer<typeof RepositoryFile>;
