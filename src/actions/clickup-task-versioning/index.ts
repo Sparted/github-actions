@@ -1,26 +1,31 @@
-import { initClickupClient } from '../../utils/clickup/client';
+import { getTaskIdsFromChangelogDiff } from '../../utils/changelog/parse';
+import { initClickupClient } from '../../utils/clickup';
+import { initGithubClient } from '../../utils/github';
 
 export type ClickupTaskVersioningParams = {
   githubToken: string;
   clickupToken: string;
+  repo: string;
+  gitTargetRef: string,
+  gitSourceRef: string,
 };
 
 export const clickupTaskVersioning = async ({
+  repo,
   githubToken,
   clickupToken,
+  gitTargetRef,
+  gitSourceRef,
 }: ClickupTaskVersioningParams) => {
   const clickupClient = initClickupClient({ token: clickupToken });
+  const githubClient = initGithubClient({ token: githubToken });
 
-  const task = await clickupClient.getTask('25txhjw');
+  const [repoOwner, repoName] = repo.split('/');
 
-  const customFieldId = task.custom_fields.find((field) => field.name === 'Production server version')?.id;
+  const oldChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitTargetRef });
+  const newChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitSourceRef });
 
-  const [
-    updatedTask,
-  ] = await Promise.all([
-    clickupClient.updateTask(task.id, { status: 'in progress' }),
-    clickupClient.updateCustomField(task.id, customFieldId!, '1.1.1.1.1'),
-  ]);
+  const tasksIds = getTaskIdsFromChangelogDiff(oldChangelog, newChangelog);
 
-  console.log(updatedTask);
+  console.log(tasksIds);
 };

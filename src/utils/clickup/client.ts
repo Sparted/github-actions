@@ -3,7 +3,7 @@ import {
   getTask,
   updateTask,
   updateCustomField,
-} from './api/task';
+} from './api';
 
 type InitParams = {
   token: string
