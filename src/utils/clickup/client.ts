@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { getTask } from './api/task';
+import {
+  getTask,
+  updateTask,
+  updateCustomField,
+} from './api/task';
 
 type InitParams = {
   token: string
@@ -21,5 +25,7 @@ export const initClickupClient = ({ token }: InitParams) => {
 
   return {
     getTask: getTask(axiosClient),
+    updateTask: updateTask(axiosClient),
+    updateCustomField: updateCustomField(axiosClient),
   };
 };
