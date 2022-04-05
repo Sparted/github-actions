@@ -19,6 +19,7 @@ const RAW_SERVER_CHANGELOG_TWO = `
 - Mod: A task with no # (#56razej)
 - Add: Some new feature not present in changelog one (#ikdf132)
 - Add: Some other new feature not present in changelog one (#mlf12e2 #ZEN1234)
+- Fix: some bug not present in first changelog with an id length of 6 (#a234p6)
 
 ## 0.0.1
 - Fix: fix bug (#21paega)
@@ -86,7 +87,7 @@ describe('changelog parse', () => {
     it('should return correct tasks ids', async () => {
       const taskIds = await getTaskIdsFromChangelogDiff(RAW_SERVER_CHANGELOG_ONE, RAW_SERVER_CHANGELOG_TWO);
 
-      expect(taskIds).toStrictEqual(['ikdf132', 'mlf12e2']);
+      expect(taskIds).toStrictEqual(['ikdf132', 'mlf12e2', 'a234p6']);
     });
 
     it('should return nothing when same server changelog', async () => {
