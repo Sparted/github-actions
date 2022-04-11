@@ -1,13 +1,14 @@
 {
   "name": "github-actions",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "repository": "git@github.com:Sparted/github-actions.git",
   "author": "Thomas <duprethomasfr@gmail.com>",
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
     "build": "rm -rf dist && ts-node ./scripts/build/build.ts",
-    "test": "jest"
+    "test": "jest",
+    "release": "yarn version"
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
