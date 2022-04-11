@@ -1,4 +1,4 @@
-import { getTaskIdsFromChangelogDiff } from './parse';
+import { getTaskIdsFromChangelogDiff, findAllTaskIds, getAllTaskIdsOfLastestVersion } from './parse';
 
 const RAW_SERVER_CHANGELOG_ONE = `
 ## 0.1.0
@@ -41,6 +41,10 @@ Blabla
 
 ### Changed
 - A task (#56razej)
+
+## [0.0.1]
+### Added
+- Init (#azerty2)
 `;
 
 const RAW_APP_CHANGELOG_TWO = `
@@ -61,6 +65,10 @@ Blabla
 
 ### Changed
 - A task (#56razej)
+
+## [0.0.1]
+### Added
+- Init (#azerty2)
 `;
 
 describe('changelog parse', () => {
@@ -84,6 +92,18 @@ describe('changelog parse', () => {
   });
 
   describe('get tasks ids from server changelog diff', () => {
+    it('should return all task ids', () => {
+      const ids = findAllTaskIds(RAW_SERVER_CHANGELOG_TWO);
+
+      expect(ids).toStrictEqual(['iafazrr', '12varjk', '27vapor', '56razej', 'ikdf132', 'mlf12e2', 'a234p6', '21paega']);
+    });
+
+    it('should return all tasks ids of lastest version', async () => {
+      const tasksIds = await getAllTaskIdsOfLastestVersion(RAW_SERVER_CHANGELOG_TWO);
+
+      expect(tasksIds).toStrictEqual(['iafazrr', '12varjk', '27vapor', '56razej', 'ikdf132', 'mlf12e2', 'a234p6']);
+    });
+
     it('should return correct tasks ids', async () => {
       const taskIds = await getTaskIdsFromChangelogDiff(RAW_SERVER_CHANGELOG_ONE, RAW_SERVER_CHANGELOG_TWO);
 
@@ -98,6 +118,18 @@ describe('changelog parse', () => {
   });
 
   describe('get tasks ids from app changelog diff', () => {
+    it('should return all task ids', () => {
+      const ids = findAllTaskIds(RAW_APP_CHANGELOG_TWO);
+
+      expect(ids).toStrictEqual(['21paega', 'iafazrr', '12varjk', '27vapor', 'ikdf132', 'mlf12e2', '56razej', 'azerty2']);
+    });
+
+    it('should return all tasks ids of lastest version', async () => {
+      const tasksIds = await getAllTaskIdsOfLastestVersion(RAW_APP_CHANGELOG_TWO);
+
+      expect(tasksIds).toStrictEqual(['21paega', 'iafazrr', '12varjk', '27vapor', 'ikdf132', 'mlf12e2', '56razej']);
+    });
+
     it('should return correct tasks ids', async () => {
       const taskIds = await getTaskIdsFromChangelogDiff(RAW_APP_CHANGELOG_ONE, RAW_APP_CHANGELOG_TWO);
 

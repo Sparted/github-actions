@@ -29,7 +29,7 @@ export const clickupTaskVersioning = async ({
   const customFieldName = customFieldPerContext[repoName];
 
   if (!customFieldName) {
-    throw new Error(`Action was run in an unsuported repo. Currently upported repos: ${Object.keys(customFieldPerContext).join(', ')}.
+    throw new Error(`Action was run in an unsuported repo. Currently supported repos: ${Object.keys(customFieldPerContext).join(', ')}.
     Add repo name to 'customFieldPerContext' to enable support`);
   }
 
