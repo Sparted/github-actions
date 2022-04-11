@@ -13,6 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Launch clickup tast release action
-        uses: Sparted/github-actions/actions/clickup-task-release@v0.0.5
+        uses: Sparted/github-actions/actions/clickup-task-release@v1.0.0
         with:
-          clickup-token: pk_32459445_1Y7D60GBN77ZBIU2G0D4JSTMHIISUWGL
+          clickup-token: ${{ secrets.ACTION_CLICKUP_TOKEN }}
