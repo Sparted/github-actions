@@ -28,11 +28,6 @@ export const clickupTaskRelease = async ({
   const [repoOwner, repoName] = repo.split('/');
   const customFieldName = customFieldPerContext[repoName];
 
-  if (!customFieldName) {
-    throw new Error(`Action was run in an unsuported repo. Currently supported repos: ${Object.keys(customFieldPerContext).join(', ')}.
-    Add repo name to 'customFieldPerContext' to enable support`);
-  }
-
   const sourceChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitSourceRef });
   const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitSourceRef });
 
