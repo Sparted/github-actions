@@ -1,4 +1,4 @@
-import { getInput } from '@actions/core';
+import { getInput, warning } from '@actions/core';
 import { clickupTaskRelease } from '../actions/clickup-task-release';
 
 const run = async () => {
@@ -19,6 +19,7 @@ const run = async () => {
     repo,
     githubToken,
     clickupToken,
+    warn: warning,
     gitSourceRef: gitHeadReference,
   });
 };

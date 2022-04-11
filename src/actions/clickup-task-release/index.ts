@@ -7,6 +7,7 @@ export type ClickupTaskReleaseParams = {
   githubToken: string;
   clickupToken: string;
   gitSourceRef: string,
+  warn: (args: any) => void,
 };
 
 const customFieldPerContext: Record<string, string> = {
@@ -19,6 +20,7 @@ export const clickupTaskRelease = async ({
   githubToken,
   clickupToken,
   gitSourceRef,
+  warn,
 }: ClickupTaskReleaseParams) => {
   const clickupClient = initClickupClient({ token: clickupToken });
   const githubClient = initGithubClient({ token: githubToken });
@@ -51,8 +53,8 @@ export const clickupTaskRelease = async ({
     const customField = task.custom_fields.find(({ name }) => name === customFieldName);
 
     if (!customField?.id) {
-      // eslint-disable-next-line no-console -- warning in script
-      console.warn(`Custom field: ${customFieldName} not found on task with id: ${task.id}.`);
+      // Can be ignored when running in a repo without versioning fields (eg: github-actions, notification-center)
+      warn(`Custom field: ${customFieldName} not found on task with id: ${task.id}.`);
     }
 
     const updateTask = clickupClient.updateTask(task.id, { status: 'accepted' });

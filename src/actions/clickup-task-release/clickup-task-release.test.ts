@@ -62,6 +62,7 @@ describe('action: clickupTaskRelease', () => {
       clickupToken: 'Bruh',
       githubToken: 'Moment',
       gitSourceRef: 'ref#1',
+      warn: () => {},
     });
 
     expect(mockedGithubClient.getChangelogFile).toHaveBeenCalledTimes(1);
@@ -89,18 +90,6 @@ describe('action: clickupTaskRelease', () => {
     expect(mockedClickupClient.updateCustomField).toHaveBeenCalledWith('56razej', 'uuid', '0.1.0');
   });
 
-  it('should throw error if repo is not supported', async () => {
-    const unsuportedRepo = 'Sparted/Yolo';
-    await expect(async () => {
-      await clickupTaskRelease({
-        repo: unsuportedRepo,
-        clickupToken: 'Bruh',
-        githubToken: 'Moment',
-        gitSourceRef: 'ref#1',
-      });
-    }).rejects.toThrow();
-  });
-
   it('should throw error if it cannot get the current version', async () => {
     mockedGithubClient.getChangelogFile.mockResolvedValueOnce(CHANGELOG_SOURCE);
     mockedGithubClient.getPackageJson.mockResolvedValueOnce({ version: undefined });
@@ -111,6 +100,7 @@ describe('action: clickupTaskRelease', () => {
         clickupToken: 'Bruh',
         githubToken: 'Moment',
         gitSourceRef: 'ref#1',
+        warn: () => {},
       });
     }).rejects.toThrow(new Error('Could not get version in package.json.'));
   });

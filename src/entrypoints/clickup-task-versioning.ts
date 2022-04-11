@@ -1,4 +1,4 @@
-import { getInput } from '@actions/core';
+import { getInput, warning } from '@actions/core';
 import { clickupTaskVersioning } from '../actions/clickup-task-versioning';
 
 const run = async () => {
@@ -20,6 +20,7 @@ const run = async () => {
     repo,
     githubToken,
     clickupToken,
+    warn: warning,
     gitSourceRef: gitHeadReference,
     gitTargetRef: gitBaseReference,
   });

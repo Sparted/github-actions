@@ -77,6 +77,7 @@ describe('action: clickupTaskVersioning', () => {
       githubToken: 'Moment',
       gitSourceRef: 'ref#1',
       gitTargetRef: 'ref#2',
+      warn: () => {},
     });
 
     expect(mockedGithubClient.getChangelogFile).toHaveBeenCalledTimes(2);
@@ -109,19 +110,6 @@ describe('action: clickupTaskVersioning', () => {
     expect(mockedClickupClient.updateCustomField).toHaveBeenCalledWith('poop123', 'uuid', '0.1.0');
   });
 
-  it('should throw error if repo is not supported', async () => {
-    const unsuportedRepo = 'Sparted/Yolo';
-    await expect(async () => {
-      await clickupTaskVersioning({
-        repo: unsuportedRepo,
-        clickupToken: 'Bruh',
-        githubToken: 'Moment',
-        gitSourceRef: 'ref#1',
-        gitTargetRef: 'ref#2',
-      });
-    }).rejects.toThrow();
-  });
-
   it('should throw error if it cannot get the current version', async () => {
     mockedGithubClient.getChangelogFile
       .mockResolvedValueOnce(CHANGELOG_TARGET_1)
@@ -135,6 +123,7 @@ describe('action: clickupTaskVersioning', () => {
         githubToken: 'Moment',
         gitSourceRef: 'ref#1',
         gitTargetRef: 'ref#2',
+        warn: () => {},
       });
     }).rejects.toThrow(new Error('Could not get version in package.json.'));
   });
@@ -152,6 +141,7 @@ describe('action: clickupTaskVersioning', () => {
         githubToken: 'Moment',
         gitSourceRef: 'ref#1',
         gitTargetRef: 'ref#2',
+        warn: () => {},
       });
     }).rejects.toThrow(new Error('No task id found. Changelog was likely not updated.'));
   });

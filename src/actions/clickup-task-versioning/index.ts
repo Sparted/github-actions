@@ -8,6 +8,7 @@ export type ClickupTaskVersioningParams = {
   clickupToken: string;
   gitTargetRef: string,
   gitSourceRef: string,
+  warn: (args: any) => void,
 };
 
 const customFieldPerContext: Record<string, string> = {
@@ -21,17 +22,13 @@ export const clickupTaskVersioning = async ({
   clickupToken,
   gitTargetRef,
   gitSourceRef,
+  warn,
 }: ClickupTaskVersioningParams) => {
   const clickupClient = initClickupClient({ token: clickupToken });
   const githubClient = initGithubClient({ token: githubToken });
 
   const [repoOwner, repoName] = repo.split('/');
   const customFieldName = customFieldPerContext[repoName];
-
-  if (!customFieldName) {
-    throw new Error(`Action was run in an unsuported repo. Currently supported repos: ${Object.keys(customFieldPerContext).join(', ')}.
-    Add repo name to 'customFieldPerContext' to enable support`);
-  }
 
   const targetChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitTargetRef });
   const sourceChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitSourceRef });
@@ -58,8 +55,8 @@ export const clickupTaskVersioning = async ({
     const customField = task.custom_fields.find(({ name }) => name === customFieldName);
 
     if (!customField?.id) {
-      // eslint-disable-next-line no-console -- warning in script
-      console.warn(`Custom field: ${customFieldName} not found on task with id: ${task.id}.`);
+      // Can be ignored when running in a repo without versioning fields (eg: github-actions, notification-center)
+      warn(`Custom field: ${customFieldName} not found on task with id: ${task.id}.`);
     }
 
     const updateTask = clickupClient.updateTask(task.id, { status: 'pending acceptance' });
