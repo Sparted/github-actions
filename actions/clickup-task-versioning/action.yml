@@ -12,4 +12,4 @@ inputs:
     default: ${{ github.repository }}
 runs:
   using: 'node16'
-  main: '../dist/clickup-task-versioning.js' 
+  main: '../../dist/clickup-task-versioning.js' 
