@@ -20,7 +20,7 @@ The actual function of the actions should be located in `src/actions/{action-nam
 
 # How to create an action
 
-- Create the action.yml in `./actions/{action-name}/action.yml` according. Syntax is documented here
+- Create the action.yml in `./actions/{action-name}/action.yml` according. [Syntax is documented here](https://docs.github.com/ja/actions/creating-actions/about-custom-actions)
 - Create entrypoint in `.src/entrypoint/{action-name}.ts` here you can get inputs from the environment variables or the github action api and validate them.
 - Create the function for your action in `./src/actions/{your-action}/index.ts`, this function should depends only on its param for ease of testing.
 
