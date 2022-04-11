@@ -1,6 +1,5 @@
 import parseChangelog from 'changelog-parser';
 
-// TODO: check for 6 length too
 const CLICKUP_ID_REGEX = /(#[a-z0-9]{6,7})/gm;
 
 /** Return ids matching the CLICKUP_ID_REGEX found in the second string not present in the first */
