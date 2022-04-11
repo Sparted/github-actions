@@ -1,9 +1,8 @@
 {
   "name": "github-actions",
-  "version": "0.0.5",
+  "version": "0.0.1",
   "repository": "git@github.com:Sparted/github-actions.git",
   "author": "Thomas <duprethomasfr@gmail.com>",
-  "license": "MIT",
   "scripts": {
     "lint": "eslint .",
     "build": "rm -rf dist && ts-node ./scripts/build/build.ts",

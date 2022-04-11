@@ -17,10 +17,10 @@ const run = async () => {
 
   await clickupTaskRelease({
     repo,
+    gitRef,
     githubToken,
     clickupToken,
     warn: warning,
-    gitSourceRef: gitRef,
   });
 };
 

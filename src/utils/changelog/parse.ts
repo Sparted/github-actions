@@ -23,7 +23,6 @@ export const getTaskIdsFromDiff = (baseChangelog: string, diffChangelog: string)
   const baseIds = findAllTaskIds(baseChangelog);
   const toDiffIds = findAllTaskIds(diffChangelog);
 
-  // Shit complexity but the dataset should never be high enough to matter ¯\_(ツ)_/¯
   const diff = toDiffIds?.filter((id) => !baseIds?.includes(id));
 
   return diff || [];

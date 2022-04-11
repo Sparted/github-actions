@@ -6,7 +6,7 @@ export type ClickupTaskReleaseParams = {
   repo: string;
   githubToken: string;
   clickupToken: string;
-  gitSourceRef: string,
+  gitRef: string,
   warn: (args: any) => void,
 };
 
@@ -19,7 +19,7 @@ export const clickupTaskRelease = async ({
   repo,
   githubToken,
   clickupToken,
-  gitSourceRef,
+  gitRef,
   warn,
 }: ClickupTaskReleaseParams) => {
   const clickupClient = initClickupClient({ token: clickupToken });
@@ -28,8 +28,8 @@ export const clickupTaskRelease = async ({
   const [repoOwner, repoName] = repo.split('/');
   const customFieldName = customFieldPerContext[repoName];
 
-  const sourceChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitSourceRef });
-  const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitSourceRef });
+  const sourceChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitRef });
+  const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitRef });
 
   const taskIds = await getAllTaskIdsOfLastestVersion(sourceChangelog);
 
