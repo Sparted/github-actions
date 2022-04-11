@@ -11,5 +11,5 @@ inputs:
     description: 'Repository name'
     default: ${{ github.repository }}
 runs:
-  using: 'node17'
+  using: 'node16'
   main: '../dist/clickup-task-versioning.js' 
