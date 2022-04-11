@@ -1,6 +1,6 @@
 {
   "name": "github-actions",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": "git@github.com:Sparted/github-actions.git",
   "author": "Thomas <duprethomasfr@gmail.com>",
   "license": "MIT",
@@ -8,7 +8,9 @@
     "lint": "eslint .",
     "build": "rm -rf dist && ts-node ./scripts/build/build.ts",
     "test": "jest",
-    "release": "yarn version"
+    "preversion": "yarn test",
+    "release": "yarn version",
+    "postversion": "git push --tags && git push"
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
