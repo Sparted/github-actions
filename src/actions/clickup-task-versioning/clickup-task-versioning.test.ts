@@ -43,11 +43,7 @@ describe('action: clickupTaskVersioning', () => {
   const repo = 'Sparted/Server';
 
   beforeEach(() => {
-    mockedClickupClient.getTask.mockClear();
-    mockedClickupClient.updateTask.mockClear();
-    mockedClickupClient.updateCustomField.mockClear();
-    mockedGithubClient.getChangelogFile.mockClear();
-    mockedGithubClient.getPackageJson.mockClear();
+    jest.clearAllMocks();
   });
 
   it('should update the correct tasks', async () => {

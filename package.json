@@ -5,7 +5,7 @@
   "author": "Thomas <duprethomasfr@gmail.com>",
   "scripts": {
     "lint": "eslint .",
-    "build": "rm -rf dist && ts-node ./scripts/build/build.ts",
+    "build": "rm -rf dist && ts-node ./scripts/build.ts",
     "test": "jest",
     "preversion": "yarn test && yarn build && git add dist",
     "release": "yarn version",

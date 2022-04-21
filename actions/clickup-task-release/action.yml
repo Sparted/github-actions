@@ -7,9 +7,11 @@ inputs:
   github-token:
     description: 'Github Token'
     default: ${{ github.token }}
+    required: false
   repo:
     description: 'Repository name'
     default: ${{ github.repository }}
+    required: false
 runs:
   using: 'node16'
   main: '../../dist/clickup-task-release.js' 

@@ -31,11 +31,7 @@ describe('action: clickupTaskRelease', () => {
   const repo = 'Sparted/Server';
 
   beforeEach(() => {
-    mockedClickupClient.getTask.mockClear();
-    mockedClickupClient.updateTask.mockClear();
-    mockedClickupClient.updateCustomField.mockClear();
-    mockedGithubClient.getChangelogFile.mockClear();
-    mockedGithubClient.getPackageJson.mockClear();
+    jest.clearAllMocks();
   });
 
   it('should update the correct tasks', async () => {
@@ -61,7 +57,7 @@ describe('action: clickupTaskRelease', () => {
       repo,
       clickupToken: 'Bruh',
       githubToken: 'Moment',
-      gitSourceRef: 'ref#1',
+      gitRef: 'ref#1',
       warn: () => {},
     });
 
@@ -99,7 +95,7 @@ describe('action: clickupTaskRelease', () => {
         repo,
         clickupToken: 'Bruh',
         githubToken: 'Moment',
-        gitSourceRef: 'ref#1',
+        gitRef: 'ref#1',
         warn: () => {},
       });
     }).rejects.toThrow(new Error('Could not get version in package.json.'));
