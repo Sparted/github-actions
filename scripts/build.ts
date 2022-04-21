@@ -4,7 +4,7 @@ import ncc from '@vercel/ncc';
 import syncFs, { promises as fs } from 'fs';
 import path from 'path';
 
-const ACTIONS_DIRECTORY = path.resolve(__dirname, '..', '..', 'src', 'entrypoints');
+const ACTIONS_DIRECTORY = path.resolve(__dirname, '..', 'src', 'entrypoints');
 const BUILD_DIST = path.resolve(__dirname, '..', 'dist');
 
 const BASE_NCC_CONFIG = {
