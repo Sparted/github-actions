@@ -14,8 +14,6 @@ Actions entrypoints are in `src/entrypoints/{action-name}.ts` and should be uniq
 
 Those file should only get and validate params from the env/github action api and pass them to a function. This is to test as much as possible of the action logic.
 
-Each param taken from the github action api should also take a equivalent from the env: `getInput('repo') || process.env['INPUT_CAPITALIZED-INPUT-NAME'];`. That way we can launch the action localy without depending on an implicit context.
-
 The actual function of the actions should be located in `src/actions/{action-name}/index.ts` and be tested there.
 
 # How to create an action
@@ -27,7 +25,7 @@ The actual function of the actions should be located in `src/actions/{action-nam
 And that's it ! The build script will pickup the new action in entrypoint.
 
 # How to run locally
-Find the environment variables needed in the entrypoint of the action you want to run and do `INPUT_ACTION_REPO=Sparted/server ts-node ./src/entrypoints/{action-name}`, replace ACTION_REPO with what you need.
+Find the environment variables needed in the entrypoint of the action you want to run and do `INPUT_REPO=Sparted/server ts-node ./src/entrypoints/{action-name}`, replace REPO with what you need.
 
 # How to use actions
 You can check the .github/workflows folder for information about using actions
