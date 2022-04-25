@@ -6,7 +6,6 @@ on:
       - master
 jobs:
   update_clickup_tasks:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Updates tasks added in the changelog to pending acceptance
     steps:
