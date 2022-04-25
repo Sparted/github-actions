@@ -43,7 +43,7 @@ export const clickupTaskVersioning = async ({
 
   const pkg = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitRef });
 
-  if (!pkg || !pkg?.version) {
+  if (!pkg?.version) {
     throw new Error('Could not get version in package.json.');
   }
 
