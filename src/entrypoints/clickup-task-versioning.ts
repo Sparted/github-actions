@@ -7,8 +7,7 @@ const run = async () => {
   const repo = getInput('REPO', { required: true });
   const branchName = getInput('BRANCH', { required: true });
   const newClickupTaskStatus = getInput('CLICKUP_TASK_STATUS', { required: true });
-
-  const clickupVersionFieldName = getInput('CLICKUP_VERSION_FIELD_NAME');
+  const clickupVersionFieldName = getInput('CLICKUP_VERSION_FIELD_NAME', { required: false });
   const gitRef = process.env.GITHUB_REF;
 
   if (!clickupToken || !githubToken || !repo || !branchName || !gitRef || !newClickupTaskStatus) {
