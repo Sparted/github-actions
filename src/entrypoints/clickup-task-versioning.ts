@@ -1,4 +1,4 @@
-import { getInput, warning, error } from '@actions/core';
+import { getInput, warning } from '@actions/core';
 import { clickupTaskVersioning } from '../actions/clickup-task-versioning';
 
 const run = async () => {
@@ -11,23 +11,19 @@ const run = async () => {
   const gitRef = process.env.GITHUB_REF;
 
   if (!clickupToken || !githubToken || !repo || !branchName || !gitRef || !newClickupTaskStatus) {
-    return error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
+    throw new Error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
   }
 
-  try {
-    return await clickupTaskVersioning({
-      repo,
-      gitRef,
-      branchName,
-      githubToken,
-      clickupToken,
-      warn: warning,
-      clickupVersionFieldName,
-      newTaskStatus: newClickupTaskStatus,
-    });
-  } catch (err) {
-    return error(err as string);
-  }
+  return clickupTaskVersioning({
+    repo,
+    gitRef,
+    branchName,
+    githubToken,
+    clickupToken,
+    warn: warning,
+    clickupVersionFieldName,
+    newTaskStatus: newClickupTaskStatus,
+  });
 };
 
 run();
