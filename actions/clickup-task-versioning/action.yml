@@ -1,9 +1,16 @@
 name: 'Clickup task versioning'
-description: 'On a merge: read the changelog and set new tasks as "Pending acceptance" on clickup. Also set the staging version'
+description: 'On a commit: read the changelog and set new tasks as "Pending acceptance" on clickup. Also set the staging version'
 inputs:
   CLICKUP_TOKEN:
     description: 'Clickup token'
     required: true
+  CLICKUP_TASK_STATUS:
+    description: 'Status to set on the clickup task (pending acceptance, accepted, etc...)'
+    required: true
+  CLICKUP_VERSION_FIELD_NAME:
+    description: 'Clickup custom version field name'
+    default: ''
+    required: false
   GITHUB_TOKEN:
     description: 'Github Token'
     default: ${{ github.token }}
@@ -12,6 +19,10 @@ inputs:
     description: 'Repository name'
     default: ${{ github.repository }}
     required: false
+  BRANCH:
+    description: 'Current branch name'
+    default: ${{ github.ref_name }}
+    required: false    
 runs:
   using: 'node16'
   main: '../../dist/clickup-task-versioning.js' 

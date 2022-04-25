@@ -1,44 +1,49 @@
 import { getTaskIdsFromChangelogDiff } from '../../utils/changelog/parse';
 import { initClickupClient } from '../../utils/clickup';
+import type { TaskStatus } from '../../utils/clickup/api';
 import { initGithubClient } from '../../utils/github';
 
 export type ClickupTaskVersioningParams = {
   repo: string;
+  gitRef: string;
   githubToken: string;
   clickupToken: string;
-  gitTargetRef: string,
-  gitSourceRef: string,
-  warn: (args: any) => void,
-};
+  newTaskStatus: string;
+  branchName: string;
+  warn: (args: any) => void;
 
-const customFieldPerContext: Record<string, string> = {
-  Server: 'Staging server version',
-  'mobile-app': 'Staging App version',
+  clickupVersionFieldName?: string;
 };
 
 export const clickupTaskVersioning = async ({
+  warn,
   repo,
+  gitRef,
+  branchName,
   githubToken,
   clickupToken,
-  gitTargetRef,
-  gitSourceRef,
-  warn,
+  newTaskStatus,
+  clickupVersionFieldName,
 }: ClickupTaskVersioningParams) => {
   const clickupClient = initClickupClient({ token: clickupToken });
   const githubClient = initGithubClient({ token: githubToken });
 
   const [repoOwner, repoName] = repo.split('/');
-  const customFieldName = customFieldPerContext[repoName];
 
-  const targetChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitTargetRef });
-  const sourceChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitSourceRef });
-  const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitSourceRef });
+  const commits = await githubClient.getCommitHistory({ owner: repoOwner, repoName, branchName });
 
-  const taskIds = await getTaskIdsFromChangelogDiff(targetChangelog, sourceChangelog);
+  const lastCommitRef = commits[1].sha;
 
-  if (!targetChangelog || !sourceChangelog) {
+  const currentChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitRef });
+  const lastChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: lastCommitRef });
+
+  const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitRef });
+
+  if (!lastChangelog || !currentChangelog) {
     throw new Error('Could not get changelog.');
   }
+
+  const taskIds = await getTaskIdsFromChangelogDiff(lastChangelog, currentChangelog);
 
   if (!version) {
     throw new Error('Could not get version in package.json.');
@@ -52,14 +57,15 @@ export const clickupTaskVersioning = async ({
   const tasks = await Promise.all(fetchTaskPromises);
 
   const updatePromises = tasks.map((task) => {
-    const customField = task.custom_fields.find(({ name }) => name === customFieldName);
+    const customField = clickupVersionFieldName
+      ? task.custom_fields.find(({ name }) => name === clickupVersionFieldName)
+      : undefined;
 
-    if (!customField?.id) {
-      // Can be ignored when running in a repo without versioning fields (eg: github-actions, notification-center)
-      warn(`Custom field: ${customFieldName} not found on task with id: ${task.id}.`);
+    if (clickupVersionFieldName && !customField?.id) {
+      warn(`Custom field: ${clickupVersionFieldName} not found on task with id: ${task.id}.`);
     }
 
-    const updateTask = clickupClient.updateTask(task.id, { status: 'pending acceptance' });
+    const updateTask = clickupClient.updateTask(task.id, { status: newTaskStatus as TaskStatus });
 
     return customField?.id
       ? [updateTask, clickupClient.updateCustomField(task.id, customField.id, version)]

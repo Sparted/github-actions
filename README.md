@@ -28,27 +28,8 @@ And that's it ! The build script will pickup the new action in entrypoint.
 Find the environment variables needed in the entrypoint of the action you want to run and do `INPUT_REPO=Sparted/server ts-node ./src/entrypoints/{action-name}`, replace REPO with what you need.
 
 # How to use actions
-You can check the .github/workflows folder for information about using actions
-```yml
-  name: Update tasks to accepted on release
-  on:
-    workflow_dispatch:
-    release:
-      branches:
-        - master
-        - main
-  jobs:
-    update_clickup_tasks:
-      runs-on: ubuntu-latest
-      name: Updates tasks added in the changelog to accepted
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Launch clickup tast release action
-          uses: Sparted/github-actions/actions/clickup-task-release@v1.0.0
-          with:
-            clickup-token: ${{ secrets.ACTION_CLICKUP_TOKEN }}
-```
+You can check the workflow-template folder for information about using actions
+
 You should always set the latest tag after the action name in the `uses` clause
 
 You should also set the neccessary secrets in the repositorys settings.

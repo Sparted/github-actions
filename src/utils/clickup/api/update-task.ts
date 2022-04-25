@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { Task, TaskType } from '../schema/Task';
 
+export type TaskStatus = 'pending acceptance' | 'accepted' | 'in progress' | 'open';
 export type UpdateTaskData = Partial<{
-  status: 'pending acceptance' | 'accepted' | 'in progress' | 'open'
+  status: TaskStatus
 }>;
 
 export const updateTask = (client: AxiosInstance) => async (

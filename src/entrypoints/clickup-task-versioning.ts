@@ -5,20 +5,25 @@ const run = async () => {
   const clickupToken = getInput('CLICKUP_TOKEN', { required: true });
   const githubToken = getInput('GITHUB_TOKEN', { required: true });
   const repo = getInput('REPO', { required: true });
-  const gitBaseReference = process.env.GITHUB_BASE_REF;
-  const gitHeadReference = process.env.GITHUB_HEAD_REF;
+  const branchName = getInput('BRANCH', { required: true });
+  const newClickupTaskStatus = getInput('CLICKUP_TASK_STATUS', { required: true });
 
-  if (!gitBaseReference || !gitHeadReference) {
-    throw new Error('GITHUB_BASE_REF or GITHUB_HEAD_REF not present in env.');
+  const clickupVersionFieldName = getInput('CLICKUP_VERSION_FIELD_NAME');
+  const gitRef = process.env.GITHUB_REF;
+
+  if (!clickupToken || !githubToken || !repo || !branchName || !gitRef || !newClickupTaskStatus) {
+    throw new Error('Cannot get all inputs: CLICKUP_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
   }
 
   await clickupTaskVersioning({
     repo,
+    gitRef,
+    branchName,
     githubToken,
     clickupToken,
     warn: warning,
-    gitSourceRef: gitHeadReference,
-    gitTargetRef: gitBaseReference,
+    clickupVersionFieldName,
+    newTaskStatus: newClickupTaskStatus,
   });
 };
 

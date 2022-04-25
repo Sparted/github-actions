@@ -5,12 +5,12 @@ import { clickupTaskVersioning } from './index';
 jest.mock('../../utils/clickup');
 jest.mock('../../utils/github');
 
-const CHANGELOG_TARGET_1 = `
+const CHANGELOG_LAST = `
 ## 0.1.0
 - Add: Some feature (#iafazrr)
 - Mod: A task (#56razej)`;
 
-const CHANGELOG_SOURCE_1 = `
+const CHANGELOG_CURRENT = `
 ## 0.1.0
 - Add: Some feature (#iafazrr)
 - Mod: A task (#56razej)
@@ -32,13 +32,14 @@ describe('action: clickupTaskVersioning', () => {
   const mockedGithubClient = {
     getChangelogFile: jest.fn(),
     getPackageJson: jest.fn(),
+    getCommitHistory: jest.fn(),
   };
 
   const mockedInitClickupClient = jest.mocked(initClickupClient);
   const mockedInitGithubClient = jest.mocked(initGithubClient);
 
-  mockedInitClickupClient.mockImplementation(() => mockedClickupClient);
-  mockedInitGithubClient.mockImplementation(() => mockedGithubClient);
+  mockedInitClickupClient.mockImplementation(() => mockedClickupClient as any);
+  mockedInitGithubClient.mockImplementation(() => mockedGithubClient as any);
 
   const repo = 'Sparted/Server';
 
@@ -47,9 +48,10 @@ describe('action: clickupTaskVersioning', () => {
   });
 
   it('should update the correct tasks', async () => {
+    mockedGithubClient.getCommitHistory.mockResolvedValueOnce([{}, { sha: 'ref#2' }]);
     mockedGithubClient.getChangelogFile
-      .mockResolvedValueOnce(CHANGELOG_TARGET_1)
-      .mockResolvedValueOnce(CHANGELOG_SOURCE_1);
+      .mockResolvedValueOnce(CHANGELOG_CURRENT)
+      .mockResolvedValueOnce(CHANGELOG_LAST);
     mockedGithubClient.getPackageJson.mockResolvedValueOnce({ version: '0.1.0' });
 
     const task1 = { id: 'azert2', custom_fields: [{ id: 'uuid', name: 'Staging server version' }] };
@@ -71,8 +73,10 @@ describe('action: clickupTaskVersioning', () => {
       repo,
       clickupToken: 'Bruh',
       githubToken: 'Moment',
-      gitSourceRef: 'ref#1',
-      gitTargetRef: 'ref#2',
+      gitRef: 'ref#1',
+      branchName: 'staging',
+      newTaskStatus: 'pending acceptance',
+      clickupVersionFieldName: 'Staging server version',
       warn: () => {},
     });
 
@@ -107,9 +111,10 @@ describe('action: clickupTaskVersioning', () => {
   });
 
   it('should throw error if it cannot get the current version', async () => {
+    mockedGithubClient.getCommitHistory.mockResolvedValueOnce([{}, { sha: 'ref#2' }]);
     mockedGithubClient.getChangelogFile
-      .mockResolvedValueOnce(CHANGELOG_TARGET_1)
-      .mockResolvedValueOnce(CHANGELOG_SOURCE_1);
+      .mockResolvedValueOnce(CHANGELOG_CURRENT)
+      .mockResolvedValueOnce(CHANGELOG_LAST);
     mockedGithubClient.getPackageJson.mockResolvedValueOnce({ version: undefined });
 
     await expect(async () => {
@@ -117,14 +122,17 @@ describe('action: clickupTaskVersioning', () => {
         repo,
         clickupToken: 'Bruh',
         githubToken: 'Moment',
-        gitSourceRef: 'ref#1',
-        gitTargetRef: 'ref#2',
+        gitRef: 'ref#1',
+        branchName: 'staging',
+        newTaskStatus: 'pending acceptance',
+        clickupVersionFieldName: 'Staging server version',
         warn: () => {},
       });
     }).rejects.toThrow(new Error('Could not get version in package.json.'));
   });
 
   it('should throw error if there is no new tasks in changelog', async () => {
+    mockedGithubClient.getCommitHistory.mockResolvedValueOnce([{}, { sha: 'ref#2' }]);
     mockedGithubClient.getChangelogFile
       .mockResolvedValueOnce(IDENTICAL_CHANGELOG)
       .mockResolvedValueOnce(IDENTICAL_CHANGELOG);
@@ -135,8 +143,10 @@ describe('action: clickupTaskVersioning', () => {
         repo,
         clickupToken: 'Bruh',
         githubToken: 'Moment',
-        gitSourceRef: 'ref#1',
-        gitTargetRef: 'ref#2',
+        gitRef: 'ref#1',
+        branchName: 'staging',
+        newTaskStatus: 'pending acceptance',
+        clickupVersionFieldName: 'Staging server version',
         warn: () => {},
       });
     }).rejects.toThrow(new Error('No task id found. Changelog was likely not updated.'));

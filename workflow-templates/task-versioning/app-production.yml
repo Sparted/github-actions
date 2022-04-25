@@ -1,12 +1,11 @@
-name: Update tasks to pending acceptance on push to master
+name: Update tasks to pending acceptance on push to production
 on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - production
 jobs:
   update_clickup_tasks:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Updates tasks added in the changelog to pending acceptance
     steps:
@@ -16,4 +15,5 @@ jobs:
         uses: Sparted/github-actions/actions/clickup-task-versioning@v1.0.0
         with:
           CLICKUP_TOKEN: ${{ secrets.ACTION_CLICKUP_TOKEN }}
-          CLICKUP_VERSION_FIELD_NAME: 'Server staging version'
+          CLICKUP_TASK_STATUS: 'accepted'
+          CLICKUP_VERSION_FIELD_NAME: 'Production App version'
