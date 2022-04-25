@@ -1,7 +1,7 @@
 name: 'Clickup task versioning'
 description: 'Compare the current changelog to the last one. Update the new tasks according to params (status, prod/staging versions).'
 inputs:
-  CLICKUP_TOKEN:
+  CLICKUP_API_TOKEN:
     description: 'Clickup token'
     required: true
   CLICKUP_TASK_STATUS:

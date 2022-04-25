@@ -2,7 +2,7 @@ import { getInput, warning } from '@actions/core';
 import { clickupTaskVersioning } from '../actions/clickup-task-versioning';
 
 const run = async () => {
-  const clickupToken = getInput('CLICKUP_TOKEN', { required: true });
+  const clickupToken = getInput('CLICKUP_API_TOKEN', { required: true });
   const githubToken = getInput('GITHUB_TOKEN', { required: true });
   const repo = getInput('REPO', { required: true });
   const branchName = getInput('BRANCH', { required: true });
@@ -11,7 +11,7 @@ const run = async () => {
   const gitRef = process.env.GITHUB_REF;
 
   if (!clickupToken || !githubToken || !repo || !branchName || !gitRef || !newClickupTaskStatus) {
-    throw new Error('Cannot get all inputs: CLICKUP_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
+    throw new Error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
   }
 
   await clickupTaskVersioning({

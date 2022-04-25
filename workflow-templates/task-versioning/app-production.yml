@@ -14,6 +14,6 @@ jobs:
       - name: Launch clickup tast versioning action
         uses: Sparted/github-actions/actions/clickup-task-versioning@v1.0.0
         with:
-          CLICKUP_TOKEN: ${{ secrets.ACTION_CLICKUP_TOKEN }}
+          CLICKUP_API_TOKEN: ${{ secrets.ACTION_CLICKUP_API_TOKEN }}
           CLICKUP_TASK_STATUS: 'accepted'
           CLICKUP_VERSION_FIELD_NAME: 'Production App version'
