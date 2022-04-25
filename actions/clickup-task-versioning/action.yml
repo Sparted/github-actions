@@ -1,5 +1,5 @@
 name: 'Clickup task versioning'
-description: 'On a commit: read the changelog and set new tasks as "Pending acceptance" on clickup. Also set the staging version'
+description: 'Compare the current changelog to the last one. Update the new tasks according to params (status, prod/staging versions).'
 inputs:
   CLICKUP_TOKEN:
     description: 'Clickup token'
@@ -22,7 +22,7 @@ inputs:
   BRANCH:
     description: 'Current branch name'
     default: ${{ github.ref_name }}
-    required: false    
+    required: false
 runs:
   using: 'node16'
   main: '../../dist/clickup-task-versioning.js' 

@@ -17,4 +17,3 @@ jobs:
           CLICKUP_TOKEN: ${{ secrets.ACTION_CLICKUP_TOKEN }}
           CLICKUP_TASK_STATUS: ''
           CLICKUP_VERSION_FIELD_NAME: ''
-          
