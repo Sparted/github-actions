@@ -1,6 +1,6 @@
 {
   "name": "github-actions",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "git@github.com:Sparted/github-actions.git",
   "author": "Thomas <duprethomasfr@gmail.com>",
   "scripts": {
