@@ -1,0 +1,28 @@
+name: 'Clickup task versioning'
+description: 'Compare the current changelog to the last one. Update the new tasks according to params (status, prod/staging versions).'
+inputs:
+  CLICKUP_API_TOKEN:
+    description: 'Clickup token'
+    required: true
+  CLICKUP_TASK_STATUS:
+    description: 'Status to set on the clickup task (pending acceptance, accepted, etc...)'
+    required: true
+  CLICKUP_VERSION_FIELD_NAME:
+    description: 'Clickup custom version field name'
+    default: ''
+    required: false
+  GITHUB_TOKEN:
+    description: 'Github Token'
+    default: ${{ github.token }}
+    required: false
+  REPO:
+    description: 'Repository name'
+    default: ${{ github.repository }}
+    required: false
+  BRANCH:
+    description: 'Current branch name'
+    default: ${{ github.ref_name }}
+    required: false
+runs:
+  using: 'node16'
+  main: '../../dist/clickup-task-versioning.js' 
