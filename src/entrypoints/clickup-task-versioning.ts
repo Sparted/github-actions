@@ -1,4 +1,4 @@
-import { getInput, warning } from '@actions/core';
+import { getInput, warning, error } from '@actions/core';
 import { clickupTaskVersioning } from '../actions/clickup-task-versioning';
 
 const run = async () => {
@@ -14,16 +14,22 @@ const run = async () => {
     throw new Error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
   }
 
-  return clickupTaskVersioning({
-    repo,
-    gitRef,
-    branchName,
-    githubToken,
-    clickupToken,
-    warn: warning,
-    clickupVersionFieldName,
-    newTaskStatus: newClickupTaskStatus,
-  });
+  try {
+    return await clickupTaskVersioning({
+      repo,
+      gitRef,
+      branchName,
+      githubToken,
+      clickupToken,
+      warn: warning,
+      clickupVersionFieldName,
+      newTaskStatus: newClickupTaskStatus,
+    });
+  } catch (e) {
+    error(e as string);
+
+    return false;
+  }
 };
 
 run();
