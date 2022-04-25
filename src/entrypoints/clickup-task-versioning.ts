@@ -11,11 +11,11 @@ const run = async () => {
   const gitRef = process.env.GITHUB_REF;
 
   if (!clickupToken || !githubToken || !repo || !branchName || !gitRef || !newClickupTaskStatus) {
-    throw new Error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
+    return error('Cannot get all inputs: CLICKUP_API_TOKEN, GITHUB_TOKEN, REPO, BRANCH, CLICKUP_TASK_STATUS, GITHUB_REF');
   }
 
   try {
-    await clickupTaskVersioning({
+    return await clickupTaskVersioning({
       repo,
       gitRef,
       branchName,
@@ -26,7 +26,7 @@ const run = async () => {
       newTaskStatus: newClickupTaskStatus,
     });
   } catch (err) {
-    error(err as string);
+    return error(err as string);
   }
 };
 
