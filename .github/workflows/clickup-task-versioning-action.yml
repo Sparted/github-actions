@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Launch clickup tast versioning action
-        uses: Sparted/github-actions/actions/clickup-task-versioning@v0.0.7
+        uses: Sparted/github-actions/actions/clickup-task-versioning@v0.0.8
         with:
-          CLICKUP_API_TOKEN: ${{ secrets.ACTION_CLICKUP_API_TOKEN }}
+          CLICKUP_API_TOKEN: ${{ secrets.CLICKUP_API_TOKEN }}
           CLICKUP_TASK_STATUS: 'accepted'
