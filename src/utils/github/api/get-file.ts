@@ -13,13 +13,19 @@ export const getFile = (githubClient: Octokit) => async ({
   owner,
   repoName,
   path,
-}: GetFileParams): Promise<RepositoryFileType> => {
-  const response = await githubClient.rest.repos.getContent({
-    owner,
-    repo: repoName,
-    path,
-    ref: branchRef,
-  });
+}: GetFileParams): Promise<RepositoryFileType | undefined> => {
+  try {
+    const response = await githubClient.rest.repos.getContent({
+      owner,
+      repo: repoName,
+      path,
+      ref: branchRef,
+    });
 
-  return RepositoryFile.parse(response.data);
+    return RepositoryFile.parse(response.data);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+    return undefined;
+  }
 };

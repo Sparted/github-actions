@@ -37,17 +37,19 @@ export const clickupTaskVersioning = async ({
   const currentChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: gitRef });
   const lastChangelog = await githubClient.getChangelogFile({ owner: repoOwner, repoName, branchRef: lastCommitRef });
 
-  const { version } = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitRef });
-
   if (!lastChangelog || !currentChangelog) {
     throw new Error('Could not get changelog.');
   }
 
-  const taskIds = await getTaskIdsFromChangelogDiff(lastChangelog, currentChangelog);
+  const pkg = await githubClient.getPackageJson({ owner: repoOwner, repoName, branchRef: gitRef });
 
-  if (!version) {
+  if (!pkg || !pkg?.version) {
     throw new Error('Could not get version in package.json.');
   }
+
+  const { version } = pkg;
+
+  const taskIds = await getTaskIdsFromChangelogDiff(lastChangelog, currentChangelog);
 
   if (!taskIds.length) {
     throw new Error('No task id found. Changelog was likely not updated.');

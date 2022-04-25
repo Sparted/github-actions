@@ -5,10 +5,16 @@ import { getFile, GetFileParams } from './get-file';
 export type GetVersionFileParam = Omit<GetFileParams, 'path'>;
 
 export const getPackageJson = (githubClient: Octokit) => async (params: GetVersionFileParam) => {
-  const { content, encoding } = await getFile(githubClient)({
+  const file = await getFile(githubClient)({
     ...params,
     path: 'package.json',
   });
+
+  if (!file) {
+    return undefined;
+  }
+
+  const { content, encoding } = file;
 
   const packageJson = JSON.parse(Buffer.from(content, encoding).toString('utf-8'));
 
